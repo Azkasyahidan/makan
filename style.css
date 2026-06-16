@@ -1,216 +1,350 @@
 /* ==========================================================================
-   GLOBAL STYLES, FONTS & ELEMEN DEKORASI BACKGROUND
+   GLOBAL STYLES & FONTS
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-body {
-    font-family: 'Poppins', sans-serif;
-    color: #333333;
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    color:#333333;
     overflow-x: hidden;
     position: relative;
     min-height: 100vh;
     
-    /* 1. Gradasi Warna Dasar (Mesh Gradient) lembut agar tidak flat putih kaku */
-    background-color: #fdfcf7;
-    background-image: 
-        radial-gradient(at 0% 0%, rgba(255, 193, 7, 0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(244, 241, 222, 0.6) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(234, 226, 183, 0.4) 0px, transparent 50%),
-        radial-gradient(at 0% 100%, rgba(255, 193, 7, 0.05) 0px, transparent 50%);
-    background-attachment: fixed;
-}
-
-/* 2. Menambahkan Ornamen Lingkaran Abstrak di Latar Belakang Kiri & Kanan */
-body::before {
-    content: '';
-    position: fixed;
-    width: 400px;
-    height: 400px;
-    top: 20%;
-    left: -150px;
-    background: radial-gradient(circle, rgba(255, 193, 7, 0.12) 0%, transparent 70%);
-    z-index: -1;
-    pointer-events: none;
-}
-
-body::after {
-    content: '';
-    position: fixed;
-    width: 500px;
-    height: 500px;
-    bottom: 10%;
-    right: -200px;
-    background: radial-gradient(circle, rgba(234, 226, 183, 0.5) 0%, transparent 70%);
-    z-index: -1;
-    pointer-events: none;
-}
-
-/* Dekorasi Judul Section */
-h2.text-center.fw-bold {
-    color: #111111;
-    font-weight: 700 !important;
-    letter-spacing: 0.5px;
-    position: relative;
-    display: inline-block;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 50px;
-}
-
-h2.text-center.fw-bold::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 5px;
-    background: linear-gradient(90deg, #ffc107, #ff9800);
-    margin: 12px auto 0 auto;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(255, 152, 0, 0.3);
+    /* SOLUSI LATAR BELAKANG TIDAK POLOS:
+       Menggunakan warna dasar krem hangat khas kuliner premium, dipadukan dengan 
+       pola dot-matrix abu-abu transparan tipis agar area luar konten terlihat berisi.
+    */
+    background-color: #fdfcf7; 
+    background-image: radial-gradient(#e2dfd2 1.2px, transparent 0);
+    background-size: 28px 28px;
 }
 
 /* ==========================================================================
-   NAVIGATION BAR
+   HEADER & NAVIGATION BAR (Aroma Catering Black & Gold Theme)
    ========================================================================== */
-.navbar {
-    background-color: #1a1a1a !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    padding: 15px 0;
-    transition: all 0.3s ease;
+header{
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:1000;
+    background:rgba(26, 26, 26, 0.85); /* Hitam elegan transparan */
+    backdrop-filter:blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-brand {
-    font-size: 24px;
-    color: #ffc107 !important;
-    letter-spacing: 1px;
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 8%;
 }
 
-.nav-link {
+.logo{
+    color:#ffc107; /* Warna Emas khas Aroma Catering */
+    font-size:26px;
+    font-weight:700;
+    letter-spacing: 0.5px;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    align-items: center;
+}
+
+nav ul li{
+    margin-left:25px;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color:#e0e0e0;
     font-weight: 500;
-    color: #e0e0e0 !important;
-    padding: 8px 16px !important;
+    transition:.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    color:#ffc107; /* Hover berubah menjadi emas */
+}
+
+/* Tombol khusus di navigasi (misal Admin/Pesan) */
+.btn-nav{
+    background: transparent;
+    color: #ffc107;
+    border: 1.5px solid #ffc107;
+    text-decoration:none;
+    padding: 8px 20px;
+    border-radius:20px;
+    font-weight: 500;
     transition: all 0.3s ease;
-    position: relative;
 }
 
-.nav-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 2px;
-    left: 16px;
-    background-color: #ffc107;
-    transition: width 0.3s ease;
-}
-
-.nav-link:hover::after,
-.nav-link.active::after {
-    width: calc(100% - 32px);
-}
-
-.nav-link:hover, 
-.nav-link.active {
-    color: #ffc107 !important;
-}
-
-.nav-admin-btn {
-    border: 1.5px solid #ffc107 !important;
-    color: #ffc107 !important;
-    border-radius: 20px;
-    padding: 6px 20px !important;
-}
-
-.nav-admin-btn:hover {
-    background-color: #ffc107 !important;
-    color: #111111 !important;
-    box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+.btn-nav:hover{
+    background:#ffc107;
+    color:#111111;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
 }
 
 /* ==========================================================================
    HERO SECTION (BANNER UTAMA)
    ========================================================================== */
-.hero-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
-                url('https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=1200') no-repeat center center;
-    background-size: cover;
-    padding: 130px 20px !important;
-    color: #ffffff;
-    border-radius: 24px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    margin-top: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.hero{
+    height:100vh;
+    background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+    url("https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=1200"); /* Menggunakan banner catering yang rapi */
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding: 0 20px;
 }
 
-.hero-section h1 {
+.hero-content{
+    max-width:800px;
+    color:white;
+}
+
+.hero h1{
+    font-size:55px;
     font-weight: 700;
-    letter-spacing: -0.5px;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    margin-bottom:20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.hero p{
+    font-size:18px;
+    margin-bottom:35px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.btn-primary{
+    background:#ffc107; /* Tombol Emas utama */
+    color:#111111;
+    padding:14px 38px;
+    text-decoration:none;
+    border-radius:30px;
+    font-weight:600;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.35);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.btn-primary:hover{
+    background:#e0a800;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.5);
+    color: #111111;
 }
 
 /* ==========================================================================
-   BUTTONS
+   MENU SECTION & GRID CONTAINER
    ========================================================================== */
-.btn-warning {
-    background-color: #ffc107;
-    border: none;
-    color: #111111;
-    padding: 12px 38px;
-    border-radius: 30px;
-    font-weight: 600;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.35);
+.menu-section{
+    padding:100px 8%;
 }
 
-.btn-warning:hover {
-    background-color: #e0a800;
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 8px 25px rgba(255, 193, 7, 0.5);
-    color: #111111;
+.section-title{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.section-title h2{
+    font-size:38px;
+    color:#111111; /* Judul hitam tegas */
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+}
+
+/* Garis hiasan emas di bawah judul section agar tidak flat */
+.section-title h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #ffc107;
+    margin: 10px auto 0 auto;
+    border-radius: 2px;
+}
+
+.menu-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    align-items: stretch;
 }
 
 /* ==========================================================================
-   CARDS & FEATURES
+   CARDS DESIGN & IMAGE CONTROLLER
    ========================================================================== */
-.feature-box, .card-menu {
-    background: #ffffff;
-    padding: 45px 30px;
-    border-radius: 24px;
-    /* Meningkatkan kontras bayangan agar kotak terlihat terpisah dari background */
-    box-shadow: 0 15px 35px rgba(165, 160, 130, 0.15); 
-    border: 1px solid rgba(230, 225, 205, 0.6);
+.card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(230, 225, 205, 0.5);
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    height: 100%;
+    display: flex;        
+    flex-direction: column; 
+    justify-content: space-between;
 }
 
-.feature-box:hover, .card-menu:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 25px 45px rgba(255, 193, 7, 0.22);
-    border-color: rgba(255, 193, 7, 0.5);
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow: 0 15px 30px rgba(210, 205, 180, 0.4);
+    border-color: rgba(255, 193, 7, 0.3);
 }
 
-.feature-box h4 {
-    font-weight: 700;
+/* Pengunci ukuran gambar kustom milikmu tetap aman */
+.card img{
+    width:100%;
+    height:230px;
+    object-fit:cover;
+}
+
+.card-body{
+    padding:25px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.card-body h3{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom:10px;
     color: #1a1a1a;
-    margin-bottom: 15px;
 }
 
-.card-menu .badge {
-    background-color: #eae7dc !important;
-    color: #4e4e4e !important;
-    font-weight: 500;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+.card-body p{
+    color:#666666;
+    font-size: 14px;
+    line-height: 1.5;
+    flex-grow: 1; /* Dorong harga dan tombol ke posisi paling bawah */
+}
+
+.card-body span{
+    display:block;
+    margin:15px 0;
+    font-weight:700;
+    color:#ffc107; /* Harga berwarna emas mencolok */
+    font-size: 20px;
+}
+
+.order-btn{
+    display:block;
+    text-align:center;
+    background:#1a1a1a; /* Tombol hitam arang elegan */
+    color:white;
+    text-decoration:none;
+    padding:12px;
+    border-radius:12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.order-btn:hover{
+    background:#ffc107; /* Saat di-hover tombol menjadi emas */
+    color: #111111;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
 }
 
 /* ==========================================================================
-   FOOTER
+   ABOUT & TESTIMONIAL SECTIONS
    ========================================================================== */
-footer {
-    background-color: #111111 !important;
-    border-top: 4px solid #ffc107;
+.about{
+    padding:100px 10%;
+    background:white;
+}
+
+.about h2{
+    margin-bottom:20px;
+    color:#111111;
+    font-weight: 700;
+}
+
+.about p{
+    line-height:1.8;
+    margin-bottom:15px;
+    color: #444444;
+}
+
+.testimonial{
+    padding:100px 8%;
+}
+
+.testimonial-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.testi-card{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.03);
+    border: 1px solid rgba(230, 225, 205, 0.4);
+}
+
+/* ==========================================================================
+   CONTACT & FOOTER
+   ========================================================================== */
+.contact{
+    background:#1a1a1a; /* Mengikuti warna tema navbar */
+    color:white;
+    text-align:center;
+    padding:80px 20px;
+}
+
+.contact h2{
+    margin-bottom:20px;
+    font-weight: 700;
+    color: #ffc107; /* Judul kontak warna emas */
+}
+
+.contact p{
+    margin:10px 0;
+    color: #e0e0e0;
+}
+
+footer{
+    background:#111111; /* Hitam pekat pelevelan bawah */
+    color:#a0a0a0;
+    text-align:center;
+    padding:25px;
     font-size: 14px;
-    letter-spacing: 0.5px;
-    color: #b0b0b0;
-    padding: 30px 0;
+    border-top: 3px solid #ffc107; /* Aksen pembatas emas */
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE FRIENDLY)
+   ========================================================================== */
+@media(max-width:768px){
+    nav{
+        padding: 15px 5%;
+    }
+    
+    nav ul{
+        display:none;
+    }
+
+    .hero h1{
+        font-size:36px;
+    }
+
+    .section-title h2{
+        font-size:30px;
+    }
 }
