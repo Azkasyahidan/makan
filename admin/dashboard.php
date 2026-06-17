@@ -1,159 +1,141 @@
 <?php
-session_start();
-include '../koneksi.php';
+session_start(); // 1. WAJIB DI TARUH DI BARIS 1: Menghubungkan atau mengaktifkan session PHP
 
-// 1. Logika Login Sederhana (Dalam satu file agar ringkas)
-if (isset($_POST['login'])) {
-    $username = mysqli_real_escape_string($koneksi, $_POST['username']);
-    $password = md5($_POST['password']);
-
-    $login_query = "SELECT * FROM admin WHERE username='$username' AND password='$password'";
-    $check = mysqli_query($koneksi, $login_query);
-
-    if (mysqli_num_rows($check) > 0) {
-        $_SESSION['admin'] = $username;
-    } else {
-        $error = "Username atau password salah!";
-    }
+// 2. KUNCI DASHBOARD: Jika tidak ada session login, tendang paksa ke login.php
+if (!isset($_SESSION['status']) || $_SESSION['status'] !== "login") {
+    header("Location: login.php");
+    exit();
 }
 
-// 2. Logika Tambah Menu
-if (isset($_POST['tambah'])) {
-    $nama = $_POST['nama_menu'];
-    $deskripsi = $_POST['deskripsi'];
-    $harga = $_POST['harga'];
-    $kategori = $_POST['kategori'];
+include '../koneksi.php'; // Hubungkan ke database utama
 
-    mysqli_query($koneksi, "INSERT INTO menu (nama_menu, deskripsi, harga, kategori) VALUES ('$nama', '$deskripsi', '$harga', '$kategori')");
+// Logika menghapus data pesanan dari dashboard jika admin menekan tombol selesaikan
+if (isset($_GET['hapus_order'])) {
+    $id_hapus = (int)$_GET['hapus_order'];
+    mysqli_query($koneksi, "DELETE FROM orders WHERE id = $id_hapus");
     header("Location: dashboard.php");
+    exit();
 }
-
-// 3. Logika Hapus Menu
-if (isset($_GET['hapus'])) {
-    $id = $_GET['hapus'];
-    mysqli_query($koneksi, "DELETE FROM menu WHERE id=$id");
-    header("Location: dashboard.php");
-}
-
-// Tampilkan View Form Login jika belum tersambung session admin
-if (!isset($_SESSION['admin'])) :
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login Admin - Aroma Catering</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-secondary d-flex align-items-center" style="height: 100vh;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card p-4 shadow">
-                    <h3 class="text-center mb-3">Admin Login</h3>
-                    <?php if(isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
-                    <form action="" method="POST">
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text" name="username" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" required>
-                        </div>
-                        <button type="submit" name="login" class="btn btn-dark w-100">Masuk</button>
-                    </form>
-                    <a href="../index.php" class="text-center d-block mt-3 text-muted">Kembali ke Beranda</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
 
-<?php else: 
-// Tampilkan Halaman Dashboard jika sudah login
-$menus = mysqli_query($koneksi, "SELECT * FROM menu");
-?>
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Dashboard Admin - Aroma Catering</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚙️ Dashboard Admin - Aroma Catering</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
+        .sidebar { background-color: #1a1a1a; min-height: 100vh; color: white; padding-top: 20px; }
+        .sidebar .nav-link { color: #ccc; margin: 5px 0; padding: 12px 20px; border-radius: 5px; }
+        .sidebar .nav-link.active { background-color: #ffc107; color: black; font-weight: 600; }
+        .sidebar .nav-link:hover:not(.active) { background-color: #2a2a2a; color: white; }
+        .main-content { padding: 40px; }
+        .card-table { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 25px; }
+        .badge-time { background-color: #e9ecef; color: #495057; font-weight: 500; }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="#">Dashboard Admin</a>
-    <div class="navbar-nav ms-auto">
-      <span class="nav-link text-white me-3">Halo, <?= $_SESSION['admin']; ?></span>
-      <a class="btn btn-sm btn-outline-light" href="logout.php">Logout</a>
-    </div>
-  </div>
-</nav>
 
-<div class="container my-5">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card p-3 shadow-sm">
-                <h5>Tambah Menu Baru</h5>
-                <hr>
-                <form action="" method="POST">
-                    <div class="mb-2">
-                        <label class="form-label">Nama Menu</label>
-                        <input type="text" name="nama_menu" class="form-control" required>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">Kategori</label>
-                        <select name="kategori" class="form-select">
-                            <option value="Prasmanan">Prasmanan</option>
-                            <option value="Nasi Box">Nasi Box</option>
-                            <option value="Tumpeng">Tumpeng</option>
-                            <option value="Snack Box">Snack Box</option>
-                        </select>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">Harga (Rp)</label>
-                        <input type="number" name="harga" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Deskripsi</label>
-                        <textarea name="deskripsi" class="form-control" rows="3" required></textarea>
-                    </div>
-                    <button type="submit" name="tambah" class="btn btn-success w-100">Simpan Menu</button>
-                </form>
+        <div class="col-md-2 sidebar d-none d-md-block">
+            <div class="px-3 mb-4">
+                <h4 class="fw-bold text-warning mb-0">Aroma Admin</h4>
+                <small class="text-muted">Manajemen Katering</small>
             </div>
+            <nav class="nav flex-column px-2">
+                <a class="nav-link active" href="dashboard.php">📦 Pesanan Masuk</a>
+                <a class="nav-link" href="menu_crud.php">🍔 Kelola Menu</a>
+                <hr style="border-color: #444;">
+                
+                <a class="nav-link text-danger" href="logout.php" onclick="return confirm('Apakah Anda yakin ingin keluar dari sistem admin?')">Logout Ke Web ←</a>
+            </nav>
         </div>
 
-        <div class="col-md-8">
-            <div class="card p-3 shadow-sm">
-                <h5>Data Menu Catering</h5>
-                <hr>
+        <div class="col-md-10 main-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1">Daftar Pesanan Masuk</h2>
+                    <p class="text-muted mb-0">Kelola dan pantau semua rincian pesanan kuliner pelanggan secara realtime.</p>
+                </div>
+                <button onclick="window.location.reload();" class="btn btn-outline-dark btn-sm">🔄 Refresh Data</button>
+            </div>
+
+            <div class="card-table">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped align-middle">
+                    <table class="table table-hover align-middle">
                         <thead class="table-dark">
                             <tr>
-                                <th>No</th>
-                                <th>Nama Menu</th>
-                                <th>Kategori</th>
-                                <th>Harga</th>
-                                <th>Aksi</th>
+                                <th class="text-center" style="width: 80px;">No</th>
+                                <th>Pelanggan / Alamat</th>
+                                <th>Jadwal Pengambilan</th>
+                                <th>Rincian Hidangan (Qty)</th>
+                                <th class="text-end">Total Pembayaran</th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $no=1; while($m = mysqli_fetch_assoc($menus)): ?>
+                            <?php
+                            $query_orders = mysqli_query($koneksi, "SELECT * FROM orders ORDER BY id DESC");
+                            $no = 1; 
+
+                            if (mysqli_num_rows($query_orders) > 0):
+                                while ($row = mysqli_fetch_assoc($query_orders)):
+                                    $order_id = $row['id']; 
+                                    $tgl_ambil = date('d F Y', strtotime($row['tanggal_pengambilan']));
+                                    $jam_ambil = date('H:i', strtotime($row['jam_pengambilan']));
+                            ?>
                             <tr>
-                                <td><?= $no++; ?></td>
+                                <td class="text-center fw-bold text-secondary"><?= $no++; ?></td>
                                 <td>
-                                    <strong><?= $m['nama_menu']; ?></strong><br>
-                                    <small class="text-muted"><?= $m['deskripsi']; ?></small>
+                                    <strong class="text-dark fs-6"><?= htmlspecialchars($row['nama_pemesan']); ?></strong>
+                                    <?php if(!empty($row['no_hp'])): ?>
+                                        <div class="text-success small fw-medium">📞 <?= htmlspecialchars($row['no_hp']); ?></div>
+                                    <?php endif; ?>
+                                    <div class="text-muted small mt-1" style="max-width: 250px;"><?= htmlspecialchars($row['alamat']); ?></div>
                                 </td>
-                                <td><?= $m['kategori']; ?></td>
-                                <td>Rp <?= number_format($m['harga'],0,',','.'); ?></td>
                                 <td>
-                                    <a href="dashboard.php?hapus=<?= $m['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus menu ini?')">Hapus</a>
+                                    <span class="badge bg-primary text-white d-block mb-1 py-1.5"><?= $tgl_ambil; ?></span>
+                                    <span class="badge badge-time d-block py-1.5">🕒 Jam <?= $jam_ambil; ?> WIB</span>
+                                </td>
+                                <td>
+                                    <ul class="list-unstyled mb-0 px-0">
+                                        <?php
+                                        $query_items = mysqli_query($koneksi, "SELECT * FROM order_items WHERE order_id = $order_id");
+                                        while ($item = mysqli_fetch_assoc($query_items)):
+                                        ?>
+                                            <li class="small mb-1">
+                                                • <?= htmlspecialchars($item['nama_menu']); ?> 
+                                                <span class="fw-bold text-dark">(<?= $item['jumlah']; ?>x)</span>
+                                            </li>
+                                        <?php endwhile; ?>
+                                    </ul>
+                                </td>
+                                <td class="text-end fw-bold text-success fs-6">
+                                    Rp <?= number_format($row['total_bayar'], 0, ',', '.'); ?>
+                                </td>
+                                <td class="text-center">
+                                    <a href="dashboard.php?hapus_order=<?= $order_id; ?>" 
+                                       class="btn btn-sm btn-success px-3 fw-medium shadow-sm" 
+                                       onclick="return confirm('Tandai pesanan dari <?= htmlspecialchars($row['nama_pemesan']); ?> telah selesai diproses?')">
+                                        ✔ Selesai
+                                    </a>
                                 </td>
                             </tr>
-                            <?php endwhile; ?>
+                            <?php 
+                                endwhile; 
+                            else:
+                            ?>
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <h5 class="mb-1">Belum Ada Pesanan Masuk</h5>
+                                    <p class="small mb-0">Data transaksi kuliner user yang sukses checkout akan otomatis tampil di sini.</p>
+                                </td>
+                            </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -161,6 +143,6 @@ $menus = mysqli_query($koneksi, "SELECT * FROM menu");
         </div>
     </div>
 </div>
+
 </body>
 </html>
-<?php endif; ?>

@@ -1,179 +1,146 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍽️ Aroma Catering - Kontak</title>
+    <title>Tentang Kami - Aroma Catering</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #fcfbf7; 
-            color: #333;
+            background-color: #121212; /* Warna dasar cadangan jika gambar gagal dimuat */
+            color: #ffffff;
+            margin: 0;
+            padding-top: 70px; /* Menghindari konten tertutup navbar fixed-top */
         }
 
-        .navbar {
-            background-color: #1a1a1a !important;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 15px 0;
+        /* 🌟 PERBAIKAN BACKGROUND: Menggabungkan gambar dengan gradasi gelap agar tidak monoton */
+        .about-section {
+            position: relative;
+            background: linear-gradient(135px, rgba(18, 18, 18, 0.9), rgba(30, 24, 18, 0.85)), 
+                        url('img/banner.jpg'); /* Pastikan file & folder gambar ini sesuai */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Membuat efek parallax saat di-scroll */
+            min-height: calc(100vh - 126px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 0;
         }
-        .navbar-brand {
-            font-size: 24px;
-            color: #ffc107 !important; 
-            letter-spacing: 1px;
+
+        .container {
+            position: relative;
+            z-index: 2;
         }
-        .nav-link {
-            font-weight: 500;
-            transition: color 0.3s ease;
+
+        /* 💎 KARTU TRANSPARAN GLASSMORPHISM PREMIUM */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            height: 100%;
+            transition: all 0.4s ease;
         }
-        .nav-link:hover {
+
+        /* Efek interaktif saat kursor diarahkan ke kartu */
+        .glass-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 193, 7, 0.3); /* Outline kuning tipis saat hover */
+            box-shadow: 0 20px 40px rgba(255, 193, 7, 0.1);
+        }
+
+        .text-warning-custom {
             color: #ffc107 !important;
         }
 
-        footer {
-            background-color: #111 !important;
-            border-top: 4px solid #ffc107;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-        }
-
-        .contact-page-section {
-            min-height: 85vh;
-            padding: 80px 20px;
-            text-align: center;
-            box-sizing: border-box;
-
-            background: linear-gradient(
-                    rgba(17, 17, 17, 0.75),
-                    rgba(17, 17, 17, 0.75)
-                ),
-                url('https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=1200');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .contact-page-section h2 {
-            color: white;
-            font-size: 42px;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .contact-subtitle {
-            color: #dddddd;
-            margin-bottom: 50px;
-            font-size: 18px;
-        }
-
-        .contact-grid {
-            width: 100%;
-            max-width: 1100px;
+        .sub-title {
+            color: #e0e0e0;
+            max-width: 600px;
             margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap; 
         }
 
-        .contact-card {
-            width: 300px;
-            padding: 40px 30px;
-            background: rgba(255, 255, 255, 0.08); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            box-sizing: border-box;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 193, 7, 0.5); /* Efek kilau emas terarah */
-            box-shadow: 0 20px 40px rgba(255, 193, 7, 0.2);
-        }
-
-        .contact-card .icon {
-            font-size: 45px;
-            margin-bottom: 20px;
-            display: inline-block;
-        }
-
-        .contact-card h3 {
-            color: #ffc107; 
-            margin-bottom: 15px;
-            font-size: 22px;
-            font-weight: 600;
-        }
-
-        .contact-card p {
-            margin: 0;
-            padding: 0;
-        }
-
-        .contact-card p a {
-            color: #ffffff !important;
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 15px;
-            line-height: 1.6;
-            transition: color 0.3s ease;
-            display: inline-block;
-            word-break: break-all; 
-        }
-
-        .contact-card p a:hover {
-            color: #ffc107 !important; 
-            text-decoration: underline;
+        /* Footer Kaki Halaman */
+        footer {
+            background-color: #0d0d0d;
+            border-top: 2px solid #ffc107;
+            padding: 15px 0;
+            font-size: 14px;
+            color: #888;
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="index.php">🍽️ Aroma Catering</a>
-    <div class="navbar-nav ms-auto">
-      <a class="nav-link active" href="index.php">Home</a>
-      <a class="nav-link" href="menu.php">Menu</a>
-      <a class="nav-link" href="tentang.php">Tentang Kami</a>
-      <a class="nav-link" href="kontak.php">Kontak</a>
-      <a class="nav-link btn btn-sm btn-outline-light ms-2 px-3 text-white" href="admin/dashboard.php">Admin</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+  <div class="container-fluid px-4">
+    
+    <a class="navbar-brand fw-bold text-warning d-flex align-items-center gap-2" href="index.php">
+      <span>🍽️</span> Aroma Catering
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavigasiAroma" aria-controls="menuNavigasiAroma" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="menuNavigasiAroma">
+      <div class="navbar-nav ms-auto gap-3 pt-3 pt-lg-0 align-items-lg-center">
+        <a class="nav-link text-white" href="index.php">Home</a>
+        <a class="nav-link text-white-50" href="menu.php">Menu</a>
+        <a class="nav-link text-white-50" href="tentang.php">Tentang Kami</a>
+        <a class="nav-link text-white-50" href="kontak.php">Kontak</a>
+        <a class="nav-link text-white fw-bold bg-warning text-dark px-3 py-1 rounded-2 text-center mt-2 mt-lg-0 shadow-sm" href="admin/login.php">Admin</a>
+      </div>
     </div>
+
   </div>
 </nav>
 
-<div class="container my-5">
-    <div class="row align-items-center">
-        <div class="col-md-6">
-            <h2>Kisah Aroma Catering</h2>
-            <p class="mt-3">Berdiri sejak tahun 2020, Aroma Catering berkomitmen untuk menghadirkan kuliner nusantara dan internasional dengan standar kualitas hotel berbintang namun harga tetap bersahabat.</p>
-            <p>Kami melayani berbagai kebutuhan event seperti pernikahan, seminar corporate, syukuran, hingga penyediaan makan siang harian kantor karyawan (lunch box).</p>
-            <p>Visi utama kami adalah menjadi mitra kuliner terpercaya yang mengedepankan cita rasa autentik dan kebersihan mutlak.</p>
-        </div>
-        <div class="col-md-6 bg-light p-5 rounded text-center">
-            <h3>Visi & Misi</h3>
-            <p class="fst-italic">"Menyajikan kebahagiaan di setiap meja makan melalui hidangan yang diolah sepenuh hati."</p>
+<style>
+  body {
+    padding-top: 75px; /* Memberikan ruang agar konten utama melorot pas di bawah navbar */
+  }
+</style>
+
+<section class="about-section">
+    <div class="container text-center">
+        <h1 class="fw-bold mb-2 display-5">Tentang Kami</h1>
+        <p class="sub-title text-white-50 mb-5 fs-6">Kenali lebih dalam komitmen kami dalam mengolah rasa dan menyajikan hidangan kuliner terbaik.</p>
+
+        <div class="row g-4 text-start justify-content-center">
+            <div class="col-md-5">
+                <div class="glass-card">
+                    <h3 class="fw-bold text-warning-custom mb-3">📖 Kisah Aroma</h3>
+                    <p class="lead fs-6 lh-lg text-white-50" style="text-align: justify;">
+                        Berawal dari kecintaan terhadap cita rasa kuliner tradisional yang otentik, **Aroma Catering** hadir untuk memenuhi kebutuhan konsumsi berbagai event berharga Anda. Kami berkomitmen menyajikan hidangan higienis, lezat, dan dikelola oleh tenaga profesional.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="glass-card">
+                    <h3 class="fw-bold text-warning-custom mb-3">🎯 Komitmen Kami</h3>
+                    <p class="lead fs-6 lh-lg text-white-50" style="text-align: justify;">
+                        Kami selalu mengutamakan kesegaran bahan baku berkualitas tinggi dan pelayanan ramah tepat waktu. Setiap pesanan snack box, kudapan premium, hingga hidangan prasmanan diproses dengan standar kebersihan yang ketat demi kepuasan rasa Anda.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+<footer class="text-center">
+    <div class="container">
+        © 2026 Aroma Catering. All Rights Reserved.
+    </div>
+</footer>
 
 </body>
 </html>

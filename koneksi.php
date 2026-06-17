@@ -1,12 +1,13 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "root";
-$db   = "db_aroma_catering";
 
-$koneksi = mysqli_connect($host, $user, $pass, $db);
+$koneksi = mysqli_connect(
+    "localhost",
+    "root",
+    "root",
+    "db_aroma_catering"
+);
 
-if (!$koneksi) {
-    die("Koneksi ke database gagal: " . mysqli_connect_error());
+if(!$koneksi){
+    die("Koneksi gagal : ".mysqli_connect_error());
 }
 ?>

@@ -1,8 +1,3 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -147,18 +142,35 @@ ini_set('display_errors', 1);
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="index.php">🍽️ Aroma Catering</a>
-    <div class="navbar-nav ms-auto">
-      <a class="nav-link" href="index.php">Home</a>
-      <a class="nav-link" href="menu.php">Menu</a>
-      <a class="nav-link" href="tentang.php">Tentang Kami</a>
-      <a class="nav-link active" href="kontak.php">Kontak</a>
-      <a class="nav-link btn btn-sm btn-outline-light ms-2 px-3 text-white" href="admin/dashboard.php">Admin</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+  <div class="container-fluid px-4">
+    
+    <a class="navbar-brand fw-bold text-warning d-flex align-items-center gap-2" href="index.php">
+      <span>🍽️</span> Aroma Catering
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavigasiAroma" aria-controls="menuNavigasiAroma" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="menuNavigasiAroma">
+      <div class="navbar-nav ms-auto gap-3 pt-3 pt-lg-0 align-items-lg-center">
+        <a class="nav-link text-white" href="index.php">Home</a>
+        <a class="nav-link text-white-50" href="menu.php">Menu</a>
+        <a class="nav-link text-white-50" href="tentang.php">Tentang Kami</a>
+        <a class="nav-link text-white-50" href="kontak.php">Kontak</a>
+        <a class="nav-link text-white fw-bold bg-warning text-dark px-3 py-1 rounded-2 text-center mt-2 mt-lg-0 shadow-sm" href="admin/dashboard.php">Admin</a>
+      </div>
     </div>
+
   </div>
 </nav>
+
+<style>
+  body {
+    padding-top: 75px; /* Memberikan ruang agar konten utama melorot pas di bawah navbar */
+  }
+</style>
 
 <section class="contact-page-section">
 
